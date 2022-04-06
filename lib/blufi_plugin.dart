@@ -81,7 +81,7 @@ class BlufiPlugin {
   }
 
   speechResultsHandler(dynamic event) {
-    if (_resultSuccessCallback != null) _resultSuccessCallback!(event);
+    if (_resultSuccessCallback != null) _resultSuccessCallback(event);
   }
 
   speechResultErrorHandler(dynamic error) {
