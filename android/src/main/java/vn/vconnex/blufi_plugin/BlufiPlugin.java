@@ -94,27 +94,22 @@ public class BlufiPlugin implements FlutterPlugin, ActivityAware, MethodCallHand
 
  @SuppressWarnings("deprecation")
   public static void registerWith(io.flutter.plugin.common.PluginRegistry.Registrar registrar) {
-//    if (registrar.activity() == null) {
-//      // If a background flutter view tries to register the plugin, there will be no activity from the registrar,
-//      // we stop the registering process immediately because the ImagePicker requires an activity.
-//      return;
-//    }
-//    Activity activity = registrar.activity();
-//    Application application = null;
-//    if (registrar.context() != null) {
-//      application = (Application) (registrar.context().getApplicationContext());
-//    }
-//    ImagePickerPlugin plugin = new ImagePickerPlugin();
-//    plugin.setup(registrar.messenger(), application, activity, registrar, null);
+ 
+    final BlufiPlugin instance = new BlufiPlugin();
+    instance.onAttachedToEngine(registrar.context(), registrar.messenger());
   }
 
   @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+          onAttachedToEngine(flutterPluginBinding.getApplicationContext(), flutterPluginBinding.getBinaryMessenger());
+  }
+  private void onAttachedToEngine(Context applicationContext, BinaryMessenger messenger) {
+
     handler = new Handler(Looper.getMainLooper());
-    channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "blufi_plugin");
+    channel = new MethodChannel(messenger, "blufi_plugin");
     channel.setMethodCallHandler(this);
-    stateChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "blufi_plugin/state");
+    stateChannel = new EventChannel(messenger, "blufi_plugin/state");
     streamHandler = new EventChannel.StreamHandler() {
       @Override
       public void onListen(Object arguments, EventChannel.EventSink events) {
@@ -128,7 +123,7 @@ public class BlufiPlugin implements FlutterPlugin, ActivityAware, MethodCallHand
       }
     };
     stateChannel.setStreamHandler(streamHandler);
-    mContext = flutterPluginBinding.getApplicationContext();
+    mContext = applicationContext;
     mThreadPool = Executors.newSingleThreadExecutor();
     mBleList = new LinkedList<>();
     mDeviceMap = new HashMap<>();
