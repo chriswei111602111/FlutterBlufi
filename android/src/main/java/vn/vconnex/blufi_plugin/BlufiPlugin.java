@@ -92,7 +92,21 @@ public class BlufiPlugin implements FlutterPlugin, ActivityAware, MethodCallHand
 
   private Handler handler;
 
-
+ @SuppressWarnings("deprecation")
+  public static void registerWith(io.flutter.plugin.common.PluginRegistry.Registrar registrar) {
+//    if (registrar.activity() == null) {
+//      // If a background flutter view tries to register the plugin, there will be no activity from the registrar,
+//      // we stop the registering process immediately because the ImagePicker requires an activity.
+//      return;
+//    }
+//    Activity activity = registrar.activity();
+//    Application application = null;
+//    if (registrar.context() != null) {
+//      application = (Application) (registrar.context().getApplicationContext());
+//    }
+//    ImagePickerPlugin plugin = new ImagePickerPlugin();
+//    plugin.setup(registrar.messenger(), application, activity, registrar, null);
+  }
 
   @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
   @Override
